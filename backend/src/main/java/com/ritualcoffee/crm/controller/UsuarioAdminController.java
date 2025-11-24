@@ -3,6 +3,7 @@ package com.ritualcoffee.crm.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import com.ritualcoffee.crm.dto.CrearUsuarioRequest;
 import com.ritualcoffee.crm.dto.UsuarioDTO;
@@ -21,7 +22,7 @@ public class UsuarioAdminController {
 
     // Crear usuario (admin o cliente)
     @PostMapping
-    public UsuarioDTO crear(@RequestBody CrearUsuarioRequest request) {
+    public UsuarioDTO crear(@Valid @RequestBody CrearUsuarioRequest request) {
         return usuarioService.crearUsuarioComoAdmin(request);
     }
 
@@ -40,7 +41,7 @@ public class UsuarioAdminController {
     // Actualizar usuario existente
     @PutMapping("/{id}")
     public UsuarioDTO actualizar(@PathVariable Integer id,
-                                 @RequestBody CrearUsuarioRequest request) {
+    		@Valid @RequestBody CrearUsuarioRequest request) {
         return usuarioService.actualizarUsuario(id, request);
     }
 

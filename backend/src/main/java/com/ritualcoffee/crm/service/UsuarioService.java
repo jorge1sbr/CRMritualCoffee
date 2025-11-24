@@ -10,7 +10,7 @@ import com.ritualcoffee.crm.dto.UsuarioResponse;
 
 public interface UsuarioService {
 
-    // ===== AUTH (lo que ya tenías) =====
+    // ===== AUTH =====
     UsuarioResponse registrarUsuario(RegistroRequest request);
 
     UsuarioResponse login(LoginRequest request);
