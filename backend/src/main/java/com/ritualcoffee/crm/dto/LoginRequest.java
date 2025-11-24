@@ -1,7 +1,11 @@
 package com.ritualcoffee.crm.dto;
 
+import jakarta.validation.constraints.*;
+
 public class LoginRequest {
 
+	@NotBlank(message = "El email es obligatorio")
+    @Email(message = "Formato de email inválido")
     private String email;
     private String password;
     
