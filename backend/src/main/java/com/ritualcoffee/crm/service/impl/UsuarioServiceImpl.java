@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ritualcoffee.crm.dto.LoginRequest;
 import com.ritualcoffee.crm.dto.RegistroRequest;
 import com.ritualcoffee.crm.dto.UsuarioResponse;
+import com.ritualcoffee.crm.entity.Rol;
 import com.ritualcoffee.crm.entity.Usuario;
 import com.ritualcoffee.crm.repository.UsuarioRepository;
 import com.ritualcoffee.crm.service.UsuarioService;
@@ -33,11 +34,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setNombre(request.getNombre());
         usuario.setApellidos(request.getApellidos());
         usuario.setEmail(request.getEmail());
-        // ⚠️ Para el proyecto: guardamos la contraseña tal cual
+        // ⚠️ Guardas texto plano tal cual (igual que antes)
         usuario.setPasswordHash(request.getPassword());
         usuario.setDireccion(request.getDireccion());
         usuario.setCodigoPostal(request.getCodigoPostal());
-        usuario.setRol("CLIENTE");
+
+        usuario.setRol(Rol.CLIENTE); // ✅ enum
         usuario.setFechaAlta(LocalDateTime.now());
 
         Usuario guardado = usuarioRepository.save(usuario);
@@ -47,7 +49,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         response.setNombre(guardado.getNombre());
         response.setApellidos(guardado.getApellidos());
         response.setEmail(guardado.getEmail());
-        response.setRol(guardado.getRol());
+        response.setRol(guardado.getRol().name()); // ✅ devolvemos String
         response.setMensaje("Usuario registrado correctamente");
 
         return response;
@@ -69,7 +71,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         response.setNombre(usuario.getNombre());
         response.setApellidos(usuario.getApellidos());
         response.setEmail(usuario.getEmail());
-        response.setRol(usuario.getRol());
+        response.setRol(usuario.getRol().name()); // ✅ devolvemos String
         response.setMensaje("Login correcto");
 
         return response;
