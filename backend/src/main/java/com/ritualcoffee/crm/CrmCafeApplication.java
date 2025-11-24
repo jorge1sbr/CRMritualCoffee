@@ -8,6 +8,8 @@ public class CrmCafeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CrmCafeApplication.class, args);
+		
+	
 	}
 
 }

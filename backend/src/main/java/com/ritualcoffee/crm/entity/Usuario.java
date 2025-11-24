@@ -12,8 +12,9 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Integer idUsuario;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String rol; // enum en BBDD, pero aquí lo tratamos como String
+    private Rol rol; 
 
     @Column(nullable = false, length = 50)
     private String nombre;
@@ -36,7 +37,7 @@ public class Usuario {
     @Column(name = "fecha_alta")
     private LocalDateTime fechaAlta;
 
-    // 👉 Getters y setters (ponlos todos, te dejo algunos de ejemplo)
+    // Getters y setters
 
     public Integer getIdUsuario() {
         return idUsuario;
@@ -46,11 +47,11 @@ public class Usuario {
         this.idUsuario = idUsuario;
     }
 
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 
