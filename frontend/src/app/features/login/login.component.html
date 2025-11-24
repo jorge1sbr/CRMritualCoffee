@@ -1,1 +1,27 @@
-<p>login works!</p>
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <mat-card class="p-8 w-96 shadow-xl">
+    <mat-card-header class="justify-center mb-4">
+      <mat-card-title class="text-2xl font-bold text-primary">CRM Ritual Coffee</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="flex flex-col gap-4">
+      <mat-form-field  class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="email" placeholder="correo electronico">
+      </mat-form-field>
+
+      <mat-form-field  class="w-full">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" [(ngModel)]="password">
+      </mat-form-field>
+
+      <p class="text-red-500 text-sm text-center h-4">{{ mensaje }}</p>
+    </mat-card-content>
+
+    <mat-card-actions class="justify-center">
+      <button mat-flat-button color="primary" (click)="hacerLogin()" class="w-full">
+        ENTRAR
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
