@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import com.ritualcoffee.crm.dto.CrearUsuarioRequest;
 import com.ritualcoffee.crm.dto.LoginRequest;
@@ -20,9 +22,12 @@ import com.ritualcoffee.crm.service.UsuarioService;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, 
+    							PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // ============================================================
@@ -41,7 +46,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setNombre(request.getNombre());
         usuario.setApellidos(request.getApellidos());
         usuario.setEmail(request.getEmail());
-        usuario.setPasswordHash(request.getPassword()); // por ahora sin encriptar
+        usuario.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         usuario.setDireccion(request.getDireccion());
         usuario.setCodigoPostal(request.getCodigoPostal());
         usuario.setRol(Rol.CLIENTE); 
@@ -66,9 +71,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("Credenciales incorrectas"));
 
-        if (!usuario.getPasswordHash().equals(request.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), usuario.getPasswordHash())) {
             throw new RuntimeException("Credenciales incorrectas");
         }
+
 
         UsuarioResponse response = new UsuarioResponse();
         response.setId(usuario.getIdUsuario());
@@ -97,7 +103,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         u.setNombre(request.getNombre());
         u.setApellidos(request.getApellidos());
         u.setEmail(request.getEmail());
-        u.setPasswordHash(request.getPassword()); // sin cifrar hasta meter seguridad
+        u.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         u.setDireccion(request.getDireccion());
         u.setCodigoPostal(request.getCodigoPostal());
         u.setRol(request.getRol()); // ADMIN o CLIENTE
@@ -135,7 +141,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         u.setRol(request.getRol());
 
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
-            u.setPasswordHash(request.getPassword());
+            u.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         }
 
         return toDTO(usuarioRepository.save(u));
