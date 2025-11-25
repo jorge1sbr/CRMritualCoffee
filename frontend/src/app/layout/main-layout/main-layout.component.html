@@ -5,26 +5,56 @@
       <h2 class="text-xl font-bold text-primary">☕ CRM Ritual</h2>
     </div>
     
-    <mat-nav-list class="pt-4">
-      <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="bg-blue-50 text-primary font-bold">
-        <mat-icon matListItemIcon>dashboard</mat-icon>
-        <span matListItemTitle>Dashboard</span>
-      </a>
+<mat-nav-list class="pt-4">
+      
+      @if (isAdmin()) {
+        <div class="px-4 text-xs font-bold text-gray-400 uppercase mt-2 mb-1">Administración</div>
+        
+        <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="bg-blue-50 text-primary font-bold">
+          <mat-icon matListItemIcon>dashboard</mat-icon>
+          <span matListItemTitle>Panel de Control</span>
+        </a>
+        
+        <a mat-list-item routerLink="/admin/tareas" routerLinkActive="bg-blue-50 text-primary font-bold">
+          <mat-icon matListItemIcon>assignment</mat-icon>
+          <span matListItemTitle>Tareas</span>
+        </a>
+      }
 
-      <a mat-list-item routerLink="/clientes" routerLinkActive="bg-blue-50 text-primary font-bold">
-        <mat-icon matListItemIcon>people</mat-icon>
-        <span matListItemTitle>Clientes</span>
-      </a>
+      @if (!isAdmin()) {
+        <div class="px-4 text-xs font-bold text-gray-400 uppercase mt-2 mb-1">Mi Cuenta</div>
+        
+        <a mat-list-item routerLink="/cliente/dashboard" routerLinkActive="bg-green-50 text-green-700 font-bold">
+          <mat-icon matListItemIcon>home</mat-icon>
+          <span matListItemTitle>Inicio</span>
+        </a>
+
+        <a mat-list-item routerLink="/cliente/productos" routerLinkActive="bg-green-50 text-green-700 font-bold">
+          <mat-icon matListItemIcon>storefront</mat-icon>
+          <span matListItemTitle>Catálogo Café</span>
+        </a>
+      }
+
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content class="bg-gray-50 flex flex-col">
     
-    <mat-toolbar color="primary" class="shadow-md z-10 flex justify-between">
-      <span>Bienvenido, Admin</span>
-      <button mat-icon-button (click)="logout()">
+<mat-toolbar color="primary" class="shadow-md z-10 flex justify-between items-center px-6">
+      
+      <div class="flex flex-col leading-tight">
+        <span class="text-lg font-bold">
+          Hola, {{ authService.currentUser()?.nombre || 'Invitado' }} {{ authService.currentUser()?.apellidos }}
+        </span>
+        <span class="text-xs opacity-80 font-medium tracking-wide">
+          Rol: {{ authService.currentUser()?.rol || 'Sin Rol' }}
+        </span>
+      </div>
+
+      <button mat-icon-button (click)="logout()" title="Cerrar Sesión">
         <mat-icon>logout</mat-icon>
       </button>
+      
     </mat-toolbar>
 
     <div class="p-8 flex-1 overflow-auto">
