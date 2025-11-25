@@ -2,6 +2,8 @@ package com.ritualcoffee.crm.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity //“Esta clase representa una tabla de la base de datos”.
 @Table(name = "producto") //“Esta entidad está asociada a la tabla llamada producto”.
 public class Producto {
@@ -18,7 +20,9 @@ public class Producto {
 
     private String categoria;   // CAPSULA / MAQUINA / GRANO
     private String tipo;        // VERDE / ROJO / GOLDEN / etc.
-    private Double precio;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal precio;
+
     private String imagen;      // nombre o ruta del archivo
 
     // Getters y setters
@@ -37,8 +41,8 @@ public class Producto {
     public String getTipo() { return tipo; }
     public void setTipo(String tipo) { this.tipo = tipo; }
 
-    public Double getPrecio() { return precio; }
-    public void setPrecio(Double precio) { this.precio = precio; }
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio = precio; }
 
     public String getImagen() { return imagen; }
     public void setImagen(String imagen) { this.imagen = imagen; }

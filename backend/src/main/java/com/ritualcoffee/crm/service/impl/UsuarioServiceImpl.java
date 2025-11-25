@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import com.ritualcoffee.crm.dto.CrearUsuarioRequest;
 import com.ritualcoffee.crm.dto.LoginRequest;
@@ -15,14 +17,22 @@ import com.ritualcoffee.crm.entity.Rol;
 import com.ritualcoffee.crm.entity.Usuario;
 import com.ritualcoffee.crm.repository.UsuarioRepository;
 import com.ritualcoffee.crm.service.UsuarioService;
+import com.ritualcoffee.crm.security.JwtUtil;
+
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository,
+                              PasswordEncoder passwordEncoder,
+                              JwtUtil jwtUtil) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     // ============================================================
@@ -41,7 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setNombre(request.getNombre());
         usuario.setApellidos(request.getApellidos());
         usuario.setEmail(request.getEmail());
-        usuario.setPasswordHash(request.getPassword()); // por ahora sin encriptar
+        usuario.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         usuario.setDireccion(request.getDireccion());
         usuario.setCodigoPostal(request.getCodigoPostal());
         usuario.setRol(Rol.CLIENTE); 
@@ -66,10 +76,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("Credenciales incorrectas"));
 
-        if (!usuario.getPasswordHash().equals(request.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), usuario.getPasswordHash())) {
             throw new RuntimeException("Credenciales incorrectas");
         }
 
+        // 1) Generar token JWT para este usuario
+        String token = jwtUtil.generarToken(usuario);
+
+        // 2) Construir respuesta
         UsuarioResponse response = new UsuarioResponse();
         response.setId(usuario.getIdUsuario());
         response.setNombre(usuario.getNombre());
@@ -77,9 +91,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         response.setEmail(usuario.getEmail());
         response.setRol(usuario.getRol().name());
         response.setMensaje("Login correcto");
+        response.setToken(token);   // 🔴 importante
 
         return response;
     }
+
 
     // ============================================================
     // ================          CRUD ADMIN         ================
@@ -97,7 +113,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         u.setNombre(request.getNombre());
         u.setApellidos(request.getApellidos());
         u.setEmail(request.getEmail());
-        u.setPasswordHash(request.getPassword()); // sin cifrar hasta meter seguridad
+        u.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         u.setDireccion(request.getDireccion());
         u.setCodigoPostal(request.getCodigoPostal());
         u.setRol(request.getRol()); // ADMIN o CLIENTE
@@ -135,7 +151,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         u.setRol(request.getRol());
 
         if (request.getPassword() != null && !request.getPassword().isBlank()) {
-            u.setPasswordHash(request.getPassword());
+            u.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         }
 
         return toDTO(usuarioRepository.save(u));
