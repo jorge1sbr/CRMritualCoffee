@@ -35,13 +35,23 @@ export class LoginComponent {
     this.mensaje = 'Conectando...';
     this.authService.login({ email: this.email, password: this.password })
       .subscribe({
-        next: (res) => {
-          this.router.navigate(['/dashboard']);
-          
+        next: (usuario: any) => { 
+          console.log('RESPUESTA DEL BACKEND:', usuario);
+
+          const rol = usuario.rol; 
+
+          if (rol === 'ADMIN') {
+            this.router.navigate(['/admin/dashboard']);
+          } else if (rol === 'CLIENTE') {
+            this.router.navigate(['/cliente/dashboard']);
+          } else {
+            this.mensaje = 'Error: Usuario sin rol asignado';
+            this.router.navigate(['/login']);
+          }
         },
         error: (err) => {
-          console.error(err); // Para ver el error real en consola
-          this.mensaje = 'Error de credenciales o conexión';
+          console.error(err);
+          this.mensaje = '❌ Credenciales incorrectas o error de servidor';
         }
       });
   }
