@@ -17,17 +17,22 @@ import com.ritualcoffee.crm.entity.Rol;
 import com.ritualcoffee.crm.entity.Usuario;
 import com.ritualcoffee.crm.repository.UsuarioRepository;
 import com.ritualcoffee.crm.service.UsuarioService;
+import com.ritualcoffee.crm.security.JwtUtil;
+
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, 
-    							PasswordEncoder passwordEncoder) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository,
+                              PasswordEncoder passwordEncoder,
+                              JwtUtil jwtUtil) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     // ============================================================
@@ -75,7 +80,10 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new RuntimeException("Credenciales incorrectas");
         }
 
+        // 1) Generar token JWT para este usuario
+        String token = jwtUtil.generarToken(usuario);
 
+        // 2) Construir respuesta
         UsuarioResponse response = new UsuarioResponse();
         response.setId(usuario.getIdUsuario());
         response.setNombre(usuario.getNombre());
@@ -83,9 +91,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         response.setEmail(usuario.getEmail());
         response.setRol(usuario.getRol().name());
         response.setMensaje("Login correcto");
+        response.setToken(token);   // 🔴 importante
 
         return response;
     }
+
 
     // ============================================================
     // ================          CRUD ADMIN         ================

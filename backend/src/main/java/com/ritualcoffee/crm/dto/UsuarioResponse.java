@@ -9,6 +9,8 @@ public class UsuarioResponse {
     private String rol;
     private String mensaje;
     
+    private String token;
+    
     // getters y setters
 	public Integer getId() {
 		return id;
@@ -46,6 +48,11 @@ public class UsuarioResponse {
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
+	public String getToken() {
+	    return token;
+	}
 
-   
+	public void setToken(String token) {
+	    this.token = token;
+	}
 }
