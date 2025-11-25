@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -28,10 +28,13 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './main-layout.component.css'
 })
 export class MainLayoutComponent {
+  authService = inject(AuthService);
+  private router = inject(Router);
   
-  constructor(private router: Router, private authService: AuthService) {}
+isAdmin = computed(() => this.authService.currentUser()?.rol === 'ADMIN');
 
   logout() {
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }
