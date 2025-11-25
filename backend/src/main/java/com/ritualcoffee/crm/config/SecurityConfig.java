@@ -25,7 +25,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Necesario para autenticar manualmente si hiciera falta
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {
@@ -41,18 +40,26 @@ public class SecurityConfig {
                 sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> auth
+                // === RUTAS PÚBLICAS ===
                 .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+
+                // === RUTAS SOLO ADMIN ===
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                // === RUTAS SOLO CLIENTE ===
+                .requestMatchers("/api/user/**").hasRole("CLIENTE")
+
+                // === CUALQUIER OTRA RUTA → REQUIERE TOKEN ===
                 .anyRequest().authenticated()
         );
 
-        // Añadir filtro JWT antes del filtro estándar de Spring
+        // Filtro JWT para validar cada petición
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-        // Desactivar login form de Spring
+        // Desactivar login HTML de Spring Security
         http.formLogin(form -> form.disable());
         http.httpBasic(httpBasic -> httpBasic.disable());
 
         return http.build();
     }
 }
-
