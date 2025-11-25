@@ -22,7 +22,7 @@
     
     <mat-toolbar color="primary" class="shadow-md z-10 flex justify-between">
       <span>Bienvenido, Admin</span>
-      <button mat-icon-button router>
+      <button mat-icon-button (click)="logout()">
         <mat-icon>logout</mat-icon>
       </button>
     </mat-toolbar>
