@@ -1,0 +1,36 @@
+<mat-sidenav-container class="h-screen w-full">
+  
+  <mat-sidenav mode="side" opened class="w-64 bg-white border-r">
+    <div class="p-6 text-center border-b">
+      <h2 class="text-xl font-bold text-primary">☕ CRM Ritual</h2>
+    </div>
+    
+    <mat-nav-list class="pt-4">
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="bg-blue-50 text-primary font-bold">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+
+      <a mat-list-item routerLink="/clientes" routerLinkActive="bg-blue-50 text-primary font-bold">
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>Clientes</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="bg-gray-50 flex flex-col">
+    
+    <mat-toolbar color="primary" class="shadow-md z-10 flex justify-between">
+      <span>Bienvenido, Admin</span>
+      <button mat-icon-button>
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <div class="p-8 flex-1 overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
