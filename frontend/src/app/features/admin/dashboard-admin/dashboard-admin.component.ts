@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, MatCardModule, MatIconModule],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  templateUrl: './dashboard-admin.component.html',
+  styleUrl: './dashboard-admin.component.css'
 })
 export class DashboardComponent {}

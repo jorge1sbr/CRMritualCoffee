@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, computed, inject } from '@angular/core';
+import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 // Módulos de Material para el diseño
@@ -8,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -27,5 +28,13 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './main-layout.component.css'
 })
 export class MainLayoutComponent {
-  // Aquí puedes añadir lógica para el botón de "Cerrar Sesión" más adelante
+  authService = inject(AuthService);
+  private router = inject(Router);
+  
+isAdmin = computed(() => this.authService.currentUser()?.rol === 'ADMIN');
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }
