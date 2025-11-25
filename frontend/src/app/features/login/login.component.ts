@@ -37,6 +37,7 @@ export class LoginComponent {
       .subscribe({
         next: (res) => {
           this.router.navigate(['/dashboard']);
+          
         },
         error: (err) => {
           console.error(err); // Para ver el error real en consola
