@@ -1,49 +1,101 @@
 package com.ritualcoffee.crm.entity;
 
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 
-@Entity //“Esta clase representa una tabla de la base de datos”.
-@Table(name = "producto") //“Esta entidad está asociada a la tabla llamada producto”.
+@Entity
+@Table(name = "producto")
 public class Producto {
 
-    @Id //“Este campo es la clave primaria de la tabla”.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //“Esta columna se autoincrementa en la BBDD”.
-    @Column(name = "id_producto") //“Este campo de la clase corresponde a la columna llamada id_producto en MySQL”.
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_producto")
+    private Integer idProducto;
 
+    @Column(nullable = false, length = 150)
     private String nombre;
 
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
-    private String categoria;   // CAPSULA / MAQUINA / GRANO
-    private String tipo;        // VERDE / ROJO / GOLDEN / etc.
-    @Column(precision = 10, scale = 2)
+    @Column(length = 100)
+    private String categoria;
+
+    @Column(length = 100)
+    private String tipo;
+
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
 
-    private String imagen;      // nombre o ruta del archivo
+    @Column(length = 255)
+    private String imagen;
 
-    // Getters y setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    @Column(nullable = false)
+    private Boolean activo = true;
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    // ====== Getters y setters ======
 
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public Integer getIdProducto() {
+        return idProducto;
+    }
 
-    public String getCategoria() { return categoria; }
-    public void setCategoria(String categoria) { this.categoria = categoria; }
+    public void setIdProducto(Integer idProducto) {
+        this.idProducto = idProducto;
+    }
 
-    public String getTipo() { return tipo; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public BigDecimal getPrecio() { return precio; }
-    public void setPrecio(BigDecimal precio) { this.precio = precio; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getImagen() { return imagen; }
-    public void setImagen(String imagen) { this.imagen = imagen; }
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
 }

@@ -166,9 +166,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
-    // ============================================================
-    // ================        MÉTODO PRIVADO       ================
-    // ============================================================
+ 
+    // ================    MÉTODO PRIVADO PARA DTO    ================
 
     private UsuarioDTO toDTO(Usuario u) {
         UsuarioDTO dto = new UsuarioDTO();
