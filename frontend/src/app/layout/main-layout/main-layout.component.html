@@ -19,6 +19,11 @@
           <mat-icon matListItemIcon>assignment</mat-icon>
           <span matListItemTitle>Tareas</span>
         </a>
+
+        <a mat-list-item routerLink="/admin/usuarios" routerLinkActive="bg-blue-50 text-primary font-bold">
+          <mat-icon matListItemIcon>assignment</mat-icon>
+          <span matListItemTitle>Usuarios</span>
+        </a>
       }
 
       @if (!isAdmin()) {
