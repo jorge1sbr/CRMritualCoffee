@@ -1,0 +1,106 @@
+<div class="p-6 max-w-5xl mx-auto">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+    <mat-icon class="scale-150">shopping_cart</mat-icon> Tu Carrito
+  </h1>
+
+  @if (cartService.count() > 0) {
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <div class="lg:col-span-2">
+        <mat-card class="overflow-hidden">
+          <table mat-table [dataSource]="cartService.items()" class="w-full">
+
+            <ng-container matColumnDef="producto">
+              <th mat-header-cell *matHeaderCellDef> Producto </th>
+              <td mat-cell *matCellDef="let item" class="py-4">
+                <div class="flex items-center gap-4">
+                  <img [src]="item.imagen || 'assets/default-coffee.jpg'" 
+                       class="w-16 h-16 object-cover rounded-md border border-gray-200">
+                  <span class="font-medium text-gray-700">{{ item.nombre }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="precio">
+              <th mat-header-cell *matHeaderCellDef> Precio </th>
+              <td mat-cell *matCellDef="let item"> {{ item.precio | currency:'EUR' }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cantidad">
+              <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+              <td mat-cell *matCellDef="let item">
+                <div class="flex items-center border rounded-md w-fit">
+                  <button mat-icon-button color="warn" (click)="cartService.decrementQuantity(item.idProducto)">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <span class="px-4 font-bold">{{ item.cantidad }}</span>
+                  <button mat-icon-button color="primary" (click)="cartService.addToCart(item)">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="subtotal">
+              <th mat-header-cell *matHeaderCellDef> Total </th>
+              <td mat-cell *matCellDef="let item" class="font-bold text-gray-800">
+                {{ (item.precio * item.cantidad) | currency:'EUR' }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let item">
+                <button mat-icon-button color="warn" (click)="cartService.removeItem(item.idProducto)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </mat-card>
+      </div>
+
+      <div class="lg:col-span-1">
+        <mat-card class="p-6 sticky top-4">
+          <h2 class="text-xl font-bold mb-4 text-gray-700">Resumen del Pedido</h2>
+
+          <div class="flex justify-between mb-2 text-gray-600">
+            <span>Subtotal ({{ cartService.count() }} items)</span>
+            <span>{{ cartService.total() | currency:'EUR' }}</span>
+          </div>
+          
+          <div class="flex justify-between mb-4 text-gray-600">
+            <span>Envío</span>
+            <span class="text-green-600 font-medium">Gratis</span>
+          </div>
+
+          <div class="border-t pt-4 flex justify-between items-center mb-6">
+            <span class="text-2xl font-bold text-gray-900">Total</span>
+            <span class="text-2xl font-bold text-primary">{{ cartService.total() | currency:'EUR' }}</span>
+          </div>
+
+          <button mat-flat-button color="primary" class="w-full py-6 text-lg mb-3">
+            TRAMITAR PEDIDO
+          </button>
+
+          <button mat-stroked-button color="warn" class="w-full" (click)="cartService.clearCart()">
+            Vaciar Carrito
+          </button>
+        </mat-card>
+      </div>
+
+    </div>
+  } @else {
+    <div class="text-center py-20 bg-white rounded-lg shadow-sm">
+      <mat-icon class="text-8xl text-gray-200 mb-4">remove_shopping_cart</mat-icon>
+      <h2 class="text-2xl font-bold text-gray-600 mb-2">Tu carrito está vacío</h2>
+      <p class="text-gray-500 mb-6">¡Descubre nuestros cafés y empieza a disfrutar!</p>
+      <button mat-flat-button color="primary" routerLink="/cliente/dashboard">
+        VOLVER AL CATÁLOGO
+      </button>
+    </div>
+  }
+</div>

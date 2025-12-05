@@ -4,6 +4,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { DashboardComponent } from './features/admin/dashboard-admin/dashboard-admin.component';
 import { DashboardUsuarioComponent } from './features/usuario/dashboard-usuario/dashboard-usuario.component';
 import { CatalogoComponent } from './features/catalogo/catalogo.component'; 
+import { CarritoComponent } from './features/carrito/carrito.component'; 
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,7 +25,8 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       { path: 'dashboard', component: DashboardUsuarioComponent },
-      { path: 'catalogo', component: CatalogoComponent }, // <--- Aquí está la ruta clave
+      { path: 'catalogo', component: CatalogoComponent }, 
+      { path: 'carrito', component: CarritoComponent } 
     ]
   },
 
