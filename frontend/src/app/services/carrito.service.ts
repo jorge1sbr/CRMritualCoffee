@@ -21,7 +21,7 @@ export class CarritoService {
   count = computed(() => this.items().reduce((acc, item) => acc + item.cantidad, 0));
   total = computed(() => this.items().reduce((acc, item) => acc + (item.precio * item.cantidad), 0));
 
-  // --- COMPATIBILIDAD CON CÓDIGO ANTIGUO (CatalogoComponent) ---
+ 
   // Estos alias hacen que totalItems() apunte a count(), etc.
   totalItems = this.count;
   totalPrecio = this.total;
